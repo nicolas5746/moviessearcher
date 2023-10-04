@@ -1,0 +1,336 @@
+/*** Selected Movie Card ***/
+
+.selected-movie-container {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 100px;
+    padding-top: 10%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.selected-movie {
+    -moz-box-direction: normal;
+    -moz-box-orient: vertical;
+    -ms-flex-direction: column;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.selected-movie::before {
+    -moz-transition: 1s ease-in-out;
+    -o-transition: 1s ease-in-out;
+    -webkit-transition: 1s ease-in-out;
+    background-color: var(--transparent-black);
+    border-radius: 34px;
+    content: '';
+    display: block;
+    height: 400px;
+    margin: 0;
+    opacity: 1;
+    position: absolute;
+    transition: 1s ease-in-out;
+    width: 700px;
+}
+
+.selected-movie>.selected-movie-info {
+    opacity: 1;
+}
+
+.selected-movie>img {
+    border-radius: 35px;
+    height: 400px;
+    width: 700px;
+}
+
+.selected-movie-info {
+    -moz-animation: 2s info;
+    -moz-box-direction: normal;
+    -moz-box-orient: vertical;
+    -moz-transition: 0.5s ease-in-out;
+    -ms-flex-direction: column;
+    -o-animation: 2s info;
+    -o-transition: 0.5s ease-in-out;
+    -webkit-animation: 2s info;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    -webkit-transition: 0.5s ease-in-out;
+    align-items: center;
+    animation: 1.5s info;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    padding: 25px;
+    position: absolute;
+    transition: 0.5s ease-in-out;
+}
+
+.selected-movie-info>h1 {
+    color: var(--azure);
+    font-family: 'Holtwood One SC', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin: 0.5% auto 2%;
+    padding: 0 2px;
+    text-align: center;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.selected-movie-info>h2 {
+    color: var(--azure);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin: -0.5% auto 3%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.selected-movie-info>h3 {
+    color: var(--azure);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 600;
+    margin-top: -0.5%;
+    padding: 0 5px;
+    text-align: center;
+    vertical-align: start;
+}
+
+.selected-movie-info>p {
+    color: var(--azure);
+    font-family: 'Allerta Stencil';
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0 10px;
+    text-align: start;
+    vertical-align: middle;
+}
+
+.selected-movie-info>p>span {
+    color: var(--azure);
+    font-family: 'Allerta Stencil';
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-align: start;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+/*** Movie Trailer ***/
+
+.movie-trailer {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0.5%;
+}
+
+.movie-trailer>h3 {
+    color: var(--azure);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0 5px;
+    text-align: center;
+    vertical-align: start;
+}
+
+.movie-trailer>img:hover {
+    cursor: pointer;
+}
+
+/*** Video Player ***/ 
+
+.video-player {
+    -moz-animation: 2s video;
+    -o-animation: 2s video;
+    -webkit-animation: 2s video;
+    align-items: center;
+    animation: 2s video;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+}
+
+.close-video {
+    bottom: -15%;
+    position: absolute;
+    text-decoration: underline;
+}
+
+.close-video::first-letter {
+    text-transform: uppercase;
+}
+
+.close-video:link {
+    color: var(--gainsboro);
+}
+
+.close-video:visited {
+    color: var(--violet);
+}
+
+.close-video:hover {
+    color: var(--azure);
+    cursor: pointer;
+}
+
+.close-video:active {
+    color: var(--red);
+}
+
+/* Vendor prefixes - Flexbox - Center */
+.selected-movie,
+.selected-movie-container,
+.selected-movie-info,
+.movie-trailer,
+.video-player {
+    -moz-box-align: center;
+    -moz-box-pack: center;
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+}
+
+/*** Keyframes ***/
+
+@keyframes info {
+    0% {
+        opacity: 0;
+    }
+    15% {
+        opacity: 0.15;
+    }
+    25% {
+        opacity: 0.25;
+    }
+    50% {
+        opacity: 0.60;
+    }
+    65% {
+        opacity: 0.75;
+    }
+    85% {
+        opacity: 0.9;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes video {
+    0% {
+        opacity: 0;
+    }
+    3% {
+        opacity: 0.15;
+    }
+    15% {
+        opacity: 0.40;
+    }
+    50% {
+        opacity: 0.70;
+    }
+    65% {
+        opacity: 0.80;
+    }
+    85% {
+        opacity: 0.95;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes info {
+    0% {
+        opacity: 0;
+    }
+    15% {
+        opacity: 0.15;
+    }
+    25% {
+        opacity: 0.25;
+    }
+    50% {
+        opacity: 0.60;
+    }
+    65% {
+        opacity: 0.75;
+    }
+    85% {
+        opacity: 0.9;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes video {
+    0% {
+        opacity: 0;
+    }
+    3% {
+        opacity: 0.15;
+    }
+    15% {
+        opacity: 0.40;
+    }
+    50% {
+        opacity: 0.70;
+    }
+    65% {
+        opacity: 0.80;
+    }
+    85% {
+        opacity: 0.95;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/*** Media queries ***/
+
+@media screen and (max-width: 599px) {
+    .selected-movie-container {
+        -moz-transform: scale(0.4);
+        -ms-transform: scale(0.4);
+        -o-transform: scale(0.4);
+        -webkit-transform: scale(0.4);
+        transform: scale(0.4);
+    }
+}
+
+@media screen and (min-width: 600px) and (max-width: 767px) {
+    .selected-movie-container {
+        -moz-transform: scale(0.75);
+        -ms-transform: scale(0.75);
+        -o-transform: scale(0.75);
+        -webkit-transform: scale(0.75);
+        transform: scale(0.75);
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .selected-movie-container {
+        padding-top: 25%;
+    }
+}

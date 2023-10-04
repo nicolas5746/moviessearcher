@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Nicolás Batista Piñeyro" />
+    <meta name="description" content="Javascript project" />
+    <title>Movies Searcher</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <div class="menu">
+          <input id="menu-toggle" class="menu-toggle" type="checkbox" />
+          <label class="menu-btn" for="menu-toggle">
+            <span></span>
+          </label>
+          <ul class="menu-box">
+            <li class="menu-topic" title="Home">home</li>
+            <li class="menu-topic" title="Premières">premières</li>
+            <li id="genres" class="menu-topic" title="Genres">
+              genres
+              <div class="genres-container">
+                <ul class="genres-list"></ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <img
+          class="logo"
+          alt="Movies Searcher"
+          src="https://i.postimg.cc/W4DLXrrR/popcorn.gif"
+          title="Movies Searcher"
+        />
+        <div class="search-container">
+          <input
+            id="search-input"
+            name="search-input"
+            placeholder="enter movie name"
+            type="text"
+          />
+          <div class="search-icon-container">
+            <svg
+              id="search-icon"
+              class="search-icon"
+              aria-labelledby="title"
+              role="img"
+              viewBox="0 0 19.9 19.7"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title id="title">Search</title>
+              <g class="search-path" fill="none">
+                <path d="M18.5 18.3l-5.4-5.4" stroke-linecap="square" />
+                <circle id="search-icon-circle" cx="8" cy="8" r="7" />
+              </g>
+            </svg>
+          </div>
+          <div id="thumbnails" class="thumbnails"></div>
+        </div>
+      </nav>
+    </header>
+    <main class="main">
+      <div id="movies" class="movies-container"></div>
+      <div id="selected-movie" class="selected-movie-container"></div>
+    </main>
+    <footer class="footer">
+      <a href="https://nicolasbatista.netlify.app/" target="_blank">
+        https://nicolasbatista.netlify.app/
+      </a>
+    </footer>
+    <script type="module" src="./scripts.js"></script>
+  </body>
+</html>

@@ -1,0 +1,425 @@
+/*** Main Class ***/
+
+.main {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+}
+
+/*** Movie Cards ***/
+
+.movies-container {
+    align-items: center;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    justify-content: center;
+    padding-bottom: 5vh;
+    padding-top: 10%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.movie {
+    -moz-box-direction: normal;
+    -moz-box-orient: vertical;
+    -ms-flex-direction: column;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.movie::before {
+    -moz-transition: 0.3s ease-in-out;
+    -o-transition: 0.3s ease-in-out;
+    -webkit-transition: 0.3s ease-in-out;
+    background-image: -moz-linear-gradient(30deg, var(--black) 28%, var(--transparent-grey) 100%);
+    background-image: -o-linear-gradient(30deg, var(--black) 28%, var(--transparent-grey) 100%);
+    background-image: -webkit-gradient(30deg, var(--black) 28%, var(--transparent-grey) 100%);
+    background-image: -webkit-linear-gradient(30deg, var(--black) 28%, var(--transparent-grey) 100%);
+    background-image: linear-gradient(30deg, var(--black) 28%, var(--transparent-grey) 100%);
+    border-radius: 10px;
+    content: '';
+    display: block;
+    height: 300px;
+    opacity: 0;
+    position: absolute;
+    transition: 0.3s ease-in-out;
+    width: 200px;
+    z-index: 2;
+}
+
+.movie:hover::before {
+    opacity: 1;
+}
+
+.movie:hover>.latest-movie-info {
+    opacity: 1;
+}
+
+.movie>img {
+    border-radius: 35px;
+    height: 300px;
+    padding: 25px;
+    position: relative;
+    width: 200px;
+}
+
+.latest-movie-info {
+    -moz-box-direction: normal;
+    -moz-box-orient: vertical;
+    -moz-transition: 0.5s ease-in-out;
+    -ms-flex-direction: column;
+    -o-transition: 0.5s ease-in-out;
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    -webkit-transition: 0.5s ease-in-out;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0;
+    padding: 25px;
+    position: absolute;
+    transition: 0.5s ease-in-out;
+    z-index: 2;
+}
+
+.latest-movie-info>h1,
+.latest-movie-info>h2 {
+    color: var(--azure);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: -2%;
+    padding: 0 8px;
+    text-align: center;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: normal;
+}
+
+.latest-movie-info>h3 {
+    color: var(--azure);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin: 5%;
+    text-align: center;
+    vertical-align: middle;
+    white-space: normal;
+}
+
+.latest-movie-info>p {
+    color: var(--azure);
+    font-family: 'Nova Flat';
+    font-size: 0.6rem;
+    font-weight: 500;
+    margin-top: -2%;
+    padding: 5px 15px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: normal;
+}
+
+/*** Scroller ***/
+
+.scroll-to-top>a {
+    -moz-transform: translate(0, -5%);
+    -moz-transition: opacity 0.3s;
+    -ms-transform: translate(0, -5%);
+    -o-transform: translate(0, -5%);
+    -o-transition: opacity 0.3s;
+    -webkit-transform: translate(0, -5%);
+    -webkit-transition: opacity 0.3s;
+    bottom: 2px;
+    color: var(--azure);
+    cursor: pointer;
+    display: inline-block;
+    left: 3%;
+    letter-spacing: 0.1em;
+    padding-bottom: 60px;
+    position: fixed;
+    text-decoration: none;
+    transform: translate(0, -50%);
+    transition: opacity 0.3s;
+    z-index: 4;
+}
+
+.scroll-to-top>a:hover {
+    opacity: 0.5;
+}
+
+.scroll-to-top>a>span {
+    -moz-animation: scrollToTop 1s infinite;
+    -moz-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+    -o-animation: scrollToTop 1s infinite;
+    -o-transform: rotate(135deg);
+    -webkit-animation: scrollToTop 1s infinite;
+    -webkit-box-sizing: border-box;
+    -webkit-transform: rotate(135deg);
+    animation: scrollToTop 1s infinite;
+    border-bottom: 3px solid #fff;
+    border-left: 3px solid #fff;
+    box-sizing: border-box;
+    height: 16px;
+    left: 50%;
+    margin-left: -12px;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    transform: rotate(135deg);
+    width: 16px;
+}
+
+.scroll-to-top>a>span:nth-of-type(1) {
+    -moz-animation-delay: 0s;
+    -o-animation-delay: 0s;
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s;
+}
+
+.scroll-to-top>a>span:nth-of-type(2) {
+    -moz-animation-delay: 0.15s;
+    -o-animation-delay: 0.15s;
+    -webkit-animation-delay: 0.15s;
+    animation-delay: 0.15s;
+    top: 16px;
+}
+
+.scroll-to-top>a>span:nth-of-type(3) {
+    -moz-animation-delay: 0.3s;
+    -o-animation-delay: 0.3s;
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s;
+    top: 32px;
+}
+
+/*** Spinner ***/
+
+.spinner {
+    display: inline-block;
+    height: 80px;
+    position: relative;
+    width: 80px;
+}
+
+.spinner div {
+    -moz-animation: spinner 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    -o-animation: spinner 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    -webkit-animation: spinner 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    animation: spinner 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    border: 4px solid var(--gainsboro);
+    border-radius: 50%;
+    margin-top: 25vh;
+    opacity: 1;
+    position: absolute;
+}
+
+.spinner div:nth-child(2) {
+    -moz-animation-delay: -0.5s;
+    -o-animation-delay: -0.5s;
+    -webkit-animation-delay: -0.5s;
+    animation-delay: -0.5s;
+}
+
+/*** Footer ***/
+
+.footer {
+    align-items: center;
+    bottom: 0;
+    background-color: var(--transparent-grey);
+    display: flex;
+    justify-content: center;
+    height: 3%;
+    padding: 0.2%;
+    position: fixed;
+    width: 100%;
+    z-index: 4;
+}
+
+.footer>a {
+    align-items: center;
+    display: flex;
+    font-family: 'Allerta Stencil';
+    font-size: 0.6rem;
+    font-weight: 500;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.footer>a:link {
+    color: var(--gainsboro);
+}
+
+.footer>a:visited {
+    color: var(--light-lavander);
+}
+
+.footer>a:hover {
+    color: var(--azure);
+}
+
+.footer>a:active {
+    color: var(--red);
+}
+
+/*** Vendor prefixes - Flexbox ***/
+.footer,
+.footer>a,
+.latest-movie-info,
+.main,
+.movie {
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: -webkit-flex;
+}
+
+/*** Vendor prefixes - Center ***/
+
+.footer,
+.footer>a,
+.latest-movie-info,
+.movie,
+.movies-container {
+    -moz-box-align: center;
+    -moz-box-pack: center;
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+}
+
+/* Keyframes */
+
+@keyframes scrollToTop {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes spinner {
+    0% {
+        height: 0;
+        left: 36px;
+        opacity: 0;
+        top: 36px;
+        width: 0;
+    }
+
+    5% {
+        height: 0;
+        left: 36px;
+        opacity: 1;
+        top: 36px;
+        width: 0;
+    }
+
+    100% {
+        height: 72px;
+        left: 0px;
+        opacity: 0;
+        top: 0px;
+        width: 72px;
+    }
+}
+
+@-webkit-keyframes scrollToTop {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes spinner {
+    0% {
+        height: 0;
+        left: 36px;
+        opacity: 0;
+        top: 36px;
+        width: 0;
+    }
+
+    5% {
+        height: 0;
+        left: 36px;
+        opacity: 1;
+        top: 36px;
+        width: 0;
+    }
+
+    100% {
+        height: 72px;
+        left: 0px;
+        opacity: 0;
+        top: 0px;
+        width: 72px;
+    }
+}
+
+/*** Media queries ***/
+
+@media screen and (max-width: 479px) {
+    .movies-container {
+        grid-template-columns: auto;
+    }
+
+    .scroll-to-top>a {
+        left: 7%;
+    }
+
+    .scroll-to-top>a>span {
+        height: 10px;
+        width: 10px;
+    }
+}
+
+@media screen and (min-width: 480px) and (max-width: 767px) {
+    .movies-container {
+        grid-template-columns: auto auto;
+    }
+
+    .scroll-to-top>a {
+        left: 5%;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .movies-container {
+        grid-template-columns: auto auto auto;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .movies-container {
+        padding-top: 25%;
+    }
+
+    .movie>img {
+        padding: 8px;
+    }
+}
