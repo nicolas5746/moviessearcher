@@ -1,68 +1,118 @@
-import fetchData from './data.js';
+import { moviesRequest } from './data.js';
 import {
     currentYear,
-    genres,
     genreClass,
-    genresContainerClass,
-    logoClass,
+    genresBox,
+    genresBtn,
+    genresContainer,
+    logo,
+    menuBtn,
     menuToggle,
     menuTopicClass,
     moviesList,
-    searchIconClass,
+    searchIcon,
     searchInput,
-    selectedMovie,
     selectedMovieClass,
-    spinnerClass,
-    thumbnails
+    skeletonsSelector,
+    thumbnails,
+    title,
+    videoPlayerClass
 } from './global.js';
-import { displayMovies, findMovies, moviesByGenderName, scrollToTop } from './layouts.js';
-import { closeVideoPlayer, videoPlayer } from './player.js';
+import {
+    addMoviesPage,
+    displayMovies,
+    displaySearchResults,
+    findMovies,
+    moviesByGenderName,
+    scrollToTop
+} from './layouts.js';
+import { videoPlayer } from './player.js';
 
-const handleGenresById = (result, response) => {
+let displayByGenre = false;
+let displayPremieres = false;
+let genreId;
+let scrollingIsDisabled = false;
+
+const handleGenresById = (result) => {
     const genres = result.genres;
+
     for (let i = 0; i < genres.length; i++) {
         moviesByGenderName(`${genres[i].name}`);
         genreClass[i].onclick = () => displayMovies(`with_genres=${genres[i].id}&year=${currentYear}`);
+        genreClass[i].setAttribute('title', genres[i].name);
+        genreClass[i].setAttribute('id', genres[i].id);
     }
+
+    [...genreClass].forEach((genre, index) => {
+        genre.addEventListener('click', () => {
+            displayPremieres = false;
+            displayByGenre = true;
+            genreId = genreClass[index].getAttribute('id');
+        });
+    });
 }
 
 const handleMoviesByGender = () => {
     const path = `3/genre/movie/list`;
     const params = '';
-    fetchData(handleGenresById, path, params);
+    moviesRequest(handleGenresById, path, params);
 }
 
 const handleOnHoverEffects = () => {
-    genres.addEventListener('mouseover', () => {
-        genresContainerClass[0].style.display = '-moz-box';
-        genresContainerClass[0].style.display = '-ms-flexbox';
-        genresContainerClass[0].style.display = '-webkit-box';
-        genresContainerClass[0].style.display = '-webkit-flex';
-        genresContainerClass[0].style.display = 'flex';
-    });
-    genres.addEventListener('mouseout', () => {
-        genresContainerClass[0].style.display = 'none';
-    });
-    searchIconClass[0].addEventListener('mouseover', () => {
-        (searchInput.value.length >= 1)
-            ?
-            searchIconClass[0].style.cursor = 'pointer'
-            :
-            searchIconClass[0].style.removeProperty('cursor');
+    searchIcon.addEventListener('mouseover', () => {
+        (searchInput.value.length >= 1) ? searchIcon.style.cursor = 'pointer' : searchIcon.style.removeProperty('cursor');
     });
 }
 
-const handleSearchMovies = () => {
-    const param = `query=${searchInput.value}`;
-    const subdir = `search`;
-    searchInput.value = '';
-    thumbnails.innerHTML = '';
-    displayMovies(param, subdir);
+const handleHideGenresList = () => {
+    genresBox.style.left = '-100%';
+    genresBtn.style.display = 'none';
+    genresContainer.style.display = 'none';
+}
+
+const handleScrollThumbnails = () => {
+    searchInput.addEventListener('keydown', (event) => {
+        const { code } = event;
+
+        (code === 'ArrowDown')
+            ?
+            thumbnails.scrollBy(0, 3)
+            :
+            (code === 'ArrowUp')
+                ?
+                thumbnails.scrollBy(0, -3)
+                :
+                (code === 'Backspace' || code === 'Enter' || code == 'Space' || code === 'ArrowLeft' || code === 'ArrowRight' || code === 'Delete')
+                    ?
+                    thumbnails.scrollBy(0, 0)
+                    :
+                    handleScrollToTop(thumbnails);
+    });
 }
 
 export const handleHideMenu = () => {
     if (menuToggle.checked) {
         menuToggle.click();
+        handleHideGenresList();
+    }
+}
+
+const handleResetInitialValues = () => {
+    displayByGenre = false;
+    displayPremieres = false;
+    handleHideMenu();
+    handleScrollThumbnails();
+    displayMovies();
+    scrollToTop();
+}
+
+export const handleClassRemover = (className) => {
+    while (className.length >= 1) {
+        className[0].parentNode.removeChild(className[0]);
+
+        if (className.length === 0) {
+            break;
+        }
     }
 }
 
@@ -76,113 +126,145 @@ export const handleScrollToTop = (y = window) => {
 
 export const handleOnClickEvents = (event) => {
     const input = (searchInput.value).trim();
-    if ((event.target.id === 'search-icon' || event.target.id === 'search-icon-circle') && input.length >= 1) {
-        handleSearchMovies();
+    const { clientX } = event;
+    const { innerWidth } = window;
+    const { id, className, classList } = event.target;
+
+    if (menuToggle.checked) {
+        // Multiplying by 100 to get percentage
+        if (window.matchMedia('(width < 480px)').matches) {
+            if ((clientX / innerWidth * 100) > 50) {
+                handleHideMenu();
+            }
+        } else {
+            if ((clientX / innerWidth * 100) > 40) {
+                handleHideMenu();
+            }
+        }
     }
-    if (event.target.id !== 'genres' && event.target.parentNode.className !== 'menu') {
-        handleHideMenu();
+
+    if ((id === 'search-icon' || id === 'search-icon-circle') && input.length >= 1) {
+        displaySearchResults();
     }
-    if (event.target.id !== 'search-input') {
+
+    if (id !== 'search-input') {
         thumbnails.classList.add('hide');
         moviesList.classList.remove('opaquing');
+        skeletonsSelector.classList.remove('opaquing');
     }
-    if (event.target.id === 'search-input' && input.length >= 1) {
+
+    if (id === 'search-input' && input.length >= 1) {
         findMovies();
     }
-    if (event.target.id === 'genres') {
-        (genresContainerClass[0].style.display === 'flex')
-            ?
-            genresContainerClass[0].style.display = 'none'
-            :
-            genresContainerClass[0].style.display = 'flex';
-    }
-    if (event.target.id === 'menu-toggle') {
+
+    if (id === 'menu-toggle') {
         const scroller = document.querySelector('.scroll-to-top');
-        (scroller.style.display === 'none')
-            ?
-            scroller.style.removeProperty('display')
-            :
-            scroller.style.display = 'none';
+        const menuTitle = menuBtn.getAttribute('title');
+
+        (scroller.style.display === 'none') ? scroller.style.removeProperty('display') : scroller.style.display = 'none';
+
+        (menuTitle === 'Close') ? (menuBtn.setAttribute('title', 'Menu')) : menuBtn.setAttribute('title', 'Close');
     }
-    if (!menuToggle.checked) {
-        genresContainerClass[0].style.display = 'none';
+
+    if (id === 'genres-toggle') {
+        handleHideGenresList();
     }
-}
 
-export const handleScrollThumbnails = (event) => {
-    event = event || window.event;
-    let key = event.which || event.keyCode || 0;
-    (key == '40')
-        ?
-        thumbnails.scrollBy(0, 30)
-        :
-        (key == '38')
-            ?
-            thumbnails.scrollBy(0, -30)
-            :
-            (key == '8' || key == '13' || key == '32' || key == '37' || key == '39')
-                ?
-                thumbnails.scrollBy(0, 0)
-                :
-                handleScrollToTop(thumbnails);
-}
-
-export const handlePlayTrailer = (key) => {
-    handleScrollToTop();
-    selectedMovie.addEventListener('click', (event) => {
-        event.preventDefault();
-        if (event.target.id === 'watch-trailer') {
-            videoPlayer(key);
-        }
-        if (event.target.className === 'close-video') {
-            closeVideoPlayer();
-            selectedMovieClass[0].classList.remove('hide');
-        }
-    });
-}
-
-export const handleRemoveSpinner = () => {
-    while (spinnerClass.length > 0) {
-        spinnerClass[0].parentNode.removeChild(spinnerClass[0]);
-        if (spinnerClass.length === 0) {
-            break;
-        }
+    if (id === 'genres-menu' || classList.contains('genres-box')) {
+        genresBox.style.left = '0';
+        genresBtn.style.display = 'flex';
+        genresContainer.style.display = 'flex';
     }
-}
 
-export const handleOnLoad = () => {
-    logoClass[0].onclick = () => displayMovies();
-    menuTopicClass[0].onclick = () => displayMovies();
-    menuTopicClass[1].onclick = () => displayMovies(`&language=en-US&year=${currentYear + 1}`);
-    handleMoviesByGender();
-    handleOnHoverEffects();
-    scrollToTop();
-    displayMovies();
+    if (className === 'genre') {
+        handleHideMenu();
+    }
+
+    if (className === 'close-video') {
+        handleScrollToTop();
+        handleClassRemover(videoPlayerClass);
+        selectedMovieClass[0].classList.remove('hide');
+    }
 }
 
 export const handleOnSearch = (event) => {
-    event = event || window.event;
-    let key = event.which || event.keyCode || 0;
     const input = (searchInput.value).trim();
-    (key == '8' || key == '13' || key == '37' || key == '38' || key == '39' || key == '40')
+    const { key } = event;
+
+    (key === 'Backspace' || key === 'Enter' || key === 'ArrowLeft' || key === 'ArrowUp' || key === 'ArrowRight' || key === 'ArrowDown' || key === 'Delete')
         ?
         handleScrollThumbnails()
         :
         findMovies();
-    if (key == '8' && input.length < 4) {
+
+    if ((key === 'Backspace' || key === 'Delete') && input.length < 4) {
         findMovies();
     }
-    if (key == '13' & input.length >= 2) {
-        handleSearchMovies();
+
+    if (key === 'Enter' & input.length >= 2) {
+        displaySearchResults();
         moviesList.click();
     }
 }
 
-export const handleOnScrollDown = () => {
+export const handlePlayTrailer = (key) => {
+    handleScrollToTop();
+
+    window.addEventListener('click', (event) => {
+        if (event.target.id === 'watch-trailer') {
+            videoPlayer(key);
+        }
+    });
+}
+
+export const handleOnLoad = () => {
+    menuBtn.setAttribute('title', 'Menu');
+    logo.onclick = () => handleResetInitialValues();
+    menuTopicClass[0].onclick = () => handleResetInitialValues();
+    menuTopicClass[1].onclick = () => displayMovies(`&sort_by=primary_release_date.desc&language=en-US&year=${currentYear + 1}`);
+    title.onclick = () => handleResetInitialValues();
+
+    menuTopicClass[1].addEventListener('click', () => {
+        displayByGenre = false;
+        displayPremieres = true;
+        handleHideMenu();
+    });
+
+    handleMoviesByGender();
+    handleOnHoverEffects();
+    handleResetInitialValues();
+}
+
+export const handleDisableScrolling = () => {
+    const { scrollX, scrollY } = window;
+
+    window.onscroll = () => {
+        window.scrollTo(scrollX, scrollY);
+    }
+    scrollingIsDisabled = true;
+}
+
+export const handleEnableScrolling = () => {
+    window.onscroll = null;
+    scrollingIsDisabled = false;
+}
+
+export const handleOnScrollEvents = () => {
     const scroller = document.querySelector('.scroll-to-top');
-    (window.scrollY >= 600)
-        ?
-        scroller.classList.remove('hide')
-        :
-        scroller.classList.add('hide');
+    const { scrollY } = window;
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+
+    (scrollY >= 600) ? scroller.classList.remove('hide') : scroller.classList.add('hide');
+
+    if ((scrollTop + clientHeight > scrollHeight - 1) && scrollY > 0 && !scrollingIsDisabled) {
+        displayPremieres
+            ?
+            addMoviesPage(`&sort_by=primary_release_date.desc&language=en-US&year=${currentYear + 1}&`)
+            :
+            displayByGenre
+                ?
+                addMoviesPage(`&with_genres=${genreId}&year=${currentYear}&`)
+                :
+                addMoviesPage();
+    }
 }

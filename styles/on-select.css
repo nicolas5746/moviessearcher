@@ -1,26 +1,14 @@
 /*** Selected Movie Card ***/
 
 .selected-movie-container {
-    align-items: center;
-    display: flex;
-    justify-content: center;
+    margin-top: 15vh;
     padding-bottom: 100px;
-    padding-top: 10%;
     position: absolute;
     top: 0;
     width: 100%;
 }
 
 .selected-movie {
-    -moz-box-direction: normal;
-    -moz-box-orient: vertical;
-    -ms-flex-direction: column;
-    -webkit-box-direction: normal;
-    -webkit-box-orient: vertical;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     position: relative;
 }
 
@@ -45,6 +33,7 @@
 }
 
 .selected-movie>img {
+    aspect-ratio: 16/9;
     border-radius: 35px;
     height: 400px;
     width: 700px;
@@ -52,25 +41,76 @@
 
 .selected-movie-info {
     -moz-animation: 2s info;
-    -moz-box-direction: normal;
-    -moz-box-orient: vertical;
     -moz-transition: 0.5s ease-in-out;
-    -ms-flex-direction: column;
     -o-animation: 2s info;
     -o-transition: 0.5s ease-in-out;
     -webkit-animation: 2s info;
-    -webkit-box-direction: normal;
-    -webkit-box-orient: vertical;
     -webkit-transition: 0.5s ease-in-out;
-    align-items: center;
     animation: 1.5s info;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     opacity: 0;
     padding: 25px;
     position: absolute;
     transition: 0.5s ease-in-out;
+}
+
+@keyframes info {
+    0% {
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 0.15;
+    }
+
+    25% {
+        opacity: 0.25;
+    }
+
+    50% {
+        opacity: 0.60;
+    }
+
+    65% {
+        opacity: 0.75;
+    }
+
+    85% {
+        opacity: 0.9;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes info {
+    0% {
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 0.15;
+    }
+
+    25% {
+        opacity: 0.25;
+    }
+
+    50% {
+        opacity: 0.60;
+    }
+
+    65% {
+        opacity: 0.75;
+    }
+
+    85% {
+        opacity: 0.9;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 .selected-movie-info>h1 {
@@ -129,10 +169,6 @@
 /*** Movie Trailer ***/
 
 .movie-trailer {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     margin: 0.5%;
 }
 
@@ -150,18 +186,75 @@
     cursor: pointer;
 }
 
-/*** Video Player ***/ 
+/*** Video Player ***/
 
 .video-player {
     -moz-animation: 2s video;
     -o-animation: 2s video;
     -webkit-animation: 2s video;
-    align-items: center;
     animation: 2s video;
-    display: flex;
-    justify-content: center;
     position: relative;
     z-index: 2;
+}
+
+@keyframes video {
+    0% {
+        opacity: 0;
+    }
+
+    3% {
+        opacity: 0.15;
+    }
+
+    15% {
+        opacity: 0.40;
+    }
+
+    50% {
+        opacity: 0.70;
+    }
+
+    65% {
+        opacity: 0.80;
+    }
+
+    85% {
+        opacity: 0.95;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes video {
+    0% {
+        opacity: 0;
+    }
+
+    3% {
+        opacity: 0.15;
+    }
+
+    15% {
+        opacity: 0.40;
+    }
+
+    50% {
+        opacity: 0.70;
+    }
+
+    65% {
+        opacity: 0.80;
+    }
+
+    85% {
+        opacity: 0.95;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 .close-video {
@@ -191,146 +284,30 @@
     color: var(--red);
 }
 
-/* Vendor prefixes - Flexbox - Center */
-.selected-movie,
-.selected-movie-container,
-.selected-movie-info,
-.movie-trailer,
-.video-player {
-    -moz-box-align: center;
-    -moz-box-pack: center;
-    -ms-flex-align: center;
-    -ms-flex-pack: center;
-    -webkit-box-align: center;
-    -webkit-box-pack: center;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: -webkit-flex;
-}
-
-/*** Keyframes ***/
-
-@keyframes info {
-    0% {
-        opacity: 0;
-    }
-    15% {
-        opacity: 0.15;
-    }
-    25% {
-        opacity: 0.25;
-    }
-    50% {
-        opacity: 0.60;
-    }
-    65% {
-        opacity: 0.75;
-    }
-    85% {
-        opacity: 0.9;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@keyframes video {
-    0% {
-        opacity: 0;
-    }
-    3% {
-        opacity: 0.15;
-    }
-    15% {
-        opacity: 0.40;
-    }
-    50% {
-        opacity: 0.70;
-    }
-    65% {
-        opacity: 0.80;
-    }
-    85% {
-        opacity: 0.95;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@-webkit-keyframes info {
-    0% {
-        opacity: 0;
-    }
-    15% {
-        opacity: 0.15;
-    }
-    25% {
-        opacity: 0.25;
-    }
-    50% {
-        opacity: 0.60;
-    }
-    65% {
-        opacity: 0.75;
-    }
-    85% {
-        opacity: 0.9;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@-webkit-keyframes video {
-    0% {
-        opacity: 0;
-    }
-    3% {
-        opacity: 0.15;
-    }
-    15% {
-        opacity: 0.40;
-    }
-    50% {
-        opacity: 0.70;
-    }
-    65% {
-        opacity: 0.80;
-    }
-    85% {
-        opacity: 0.95;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
 /*** Media queries ***/
 
-@media screen and (max-width: 599px) {
+@media (width < 550px) {
     .selected-movie-container {
-        -moz-transform: scale(0.4);
-        -ms-transform: scale(0.4);
-        -o-transform: scale(0.4);
-        -webkit-transform: scale(0.4);
-        transform: scale(0.4);
+        -moz-transform: scale(0.45);
+        -ms-transform: scale(0.45);
+        -o-transform: scale(0.45);
+        -webkit-transform: scale(0.45);
+        transform: scale(0.45);
     }
 }
 
-@media screen and (min-width: 600px) and (max-width: 767px) {
+@media (width < 768px) {
+    .selected-movie-container {
+        margin-top: 8vh;
+    }
+}
+
+@media (550px <= width < 768px) {
     .selected-movie-container {
         -moz-transform: scale(0.75);
         -ms-transform: scale(0.75);
         -o-transform: scale(0.75);
         -webkit-transform: scale(0.75);
         transform: scale(0.75);
-    }
-}
-
-@media screen and (max-width: 800px) {
-    .selected-movie-container {
-        padding-top: 25%;
     }
 }

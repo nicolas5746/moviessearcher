@@ -2,10 +2,11 @@
 @import url('https://fonts.googleapis.com/css?family=Gruppo');
 @import url('https://fonts.cdnfonts.com/css/holtwood-one-sc');
 @import url('https://fonts.googleapis.com/css?family=Nova%20Flat');
-@import './styles/load.css';
+@import './styles/global.css';
 @import './styles/navbar.css';
-@import './styles/search.css';
-@import './styles/selected.css';
+@import './styles/on-load.css';
+@import './styles/on-search.css';
+@import './styles/on-select.css';
 
 :root {
     --azure: #f0ffff;
@@ -16,6 +17,8 @@
     --golden-yellow: #ffae00;
     --green: #006400;
     --lavander: #8d8dea;
+    --light-grey: #a1a2a2;
+    --lighter-grey: #cacaca;
     --light-lavander: #cabfe7;
     --red: #f7080c;
     --skyblue-grey: #354642;
@@ -50,18 +53,4 @@ body {
     min-height: 100vh;
     min-width: 100vw;
     padding: 0;
-}
-
-/*** Reusable styles ***/
-
-.hide {
-    display: none;
-}
-
-.opaquing {
-    opacity: 0.1;
-}
-
-.rating-star {
-    color: var(--golden-yellow);
 }

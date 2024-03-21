@@ -1,5 +1,5 @@
-import { scriptTag, selectedMovie, selectedMovieClass, videoPlayerClass } from './global.js';
-import { handleHideMenu, handleScrollToTop } from './handlers.js';
+import { scriptTag, selectedMovieClass, selectedMovieContainer, videoPlayerClass } from './global.js';
+import { handleClassRemover, handleHideMenu, handleScrollToTop } from './handlers.js';
 
 const onPlayerReady = (event) => {
     event.target.playVideo();
@@ -7,13 +7,14 @@ const onPlayerReady = (event) => {
 }
 
 const onPlayerStateChange = (event) => {
-    if (event.data === YT.PlayerState.PLAYING || YT.PlayerState.PAUSED || YT.PlayerState.ENDED) {
+    if (event.data === YT.PlayerState.PLAYING || YT.PlayerState.PAUSED) {
         handleHideMenu();
     }
 }
 
 const onYouTubeIframeAPIReady = (key) => {
     let player;
+
     if (typeof (player) === 'undefined') {
         player = new window['YT'].Player('video-player', {
             events: {
@@ -38,31 +39,16 @@ const createScriptTag = () => {
 }
 
 export const loadPlayerAPI = () => {
-    (window.YT)
-        ?
-        YT
-        :
-        createScriptTag();
-}
-
-export const closeVideoPlayer = () => {
-    handleScrollToTop();
-    while (videoPlayerClass.length > 0) {
-        videoPlayerClass[0].parentNode.removeChild(videoPlayerClass[0]);
-        if (videoPlayerClass.length === 0) {
-            break;
-        }
-    }
+    (window.YT) ? YT : createScriptTag();
 }
 
 export const videoPlayer = (key) => {
-    closeVideoPlayer();
+    handleScrollToTop();
+    handleClassRemover(videoPlayerClass);
     selectedMovieClass[0].classList.add('hide');
     const videoPlayerElement = document.createElement('div');
-    videoPlayerElement.classList.add('video-player');
-    videoPlayerElement.innerHTML =
-        `<div id='video-player'></div>
-        <a class='close-video' title='Close video'>close video</a>`;
-    selectedMovie.appendChild(videoPlayerElement);
+    videoPlayerElement.classList.add('video-player', 'centered-flex');
+    videoPlayerElement.innerHTML = `<div id='video-player'></div><a class='close-video' title='Close video'>close video</a>`;
+    selectedMovieContainer.appendChild(videoPlayerElement);
     onYouTubeIframeAPIReady(key);
 }

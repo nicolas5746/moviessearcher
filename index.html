@@ -12,37 +12,49 @@
   </head>
   <body>
     <header class="header">
-      <nav class="navbar">
-        <div class="menu">
+      <nav class="navbar centered-flex row">
+        <div class="menu centered-flex">
           <input id="menu-toggle" class="menu-toggle" type="checkbox" />
-          <label class="menu-btn" for="menu-toggle">
+          <label id="menu-btn" class="menu-btn centered-flex" for="menu-toggle">
             <span></span>
           </label>
           <ul class="menu-box">
             <li class="menu-topic" title="Home">home</li>
             <li class="menu-topic" title="Premières">premières</li>
-            <li id="genres" class="menu-topic" title="Genres">
-              genres
-              <div class="genres-container">
-                <ul class="genres-list"></ul>
-              </div>
-            </li>
+            <li id="genres-menu" class="menu-topic" title="Genres">genres</li>
           </ul>
         </div>
-        <img
-          class="logo"
-          alt="Movies Searcher"
-          src="https://i.postimg.cc/W4DLXrrR/popcorn.gif"
-          title="Movies Searcher"
-        />
-        <div class="search-container">
+        <div class="genres-container centered-flex">
+          <input id="genres-toggle" class="genres-toggle" type="checkbox" />
+          <label
+            class="genres-btn centered-flex"
+            for="genres-toggle"
+            title="Back"
+          >
+            <span></span>
+          </label>
+          <div class="genres-box centered-flex">
+            <ul class="genres-list flex column"></ul>
+          </div>
+        </div>
+        <h1 id="title" class="title" title="Movies Searcher">
+          movies searcher
+        </h1>
+        <div class="search-container flex align-items-center">
+          <img
+            id="logo"
+            class="logo"
+            alt="Movies Searcher"
+            src="https://i.postimg.cc/W4DLXrrR/popcorn.gif"
+            title="Movies Searcher"
+          />
           <input
             id="search-input"
             name="search-input"
             placeholder="enter movie name"
             type="text"
           />
-          <div class="search-icon-container">
+          <div class="search-icon-container centered-flex">
             <svg
               id="search-icon"
               class="search-icon"
@@ -62,14 +74,25 @@
         </div>
       </nav>
     </header>
-    <main class="main">
-      <div id="movies" class="movies-container"></div>
-      <div id="selected-movie" class="selected-movie-container"></div>
+    <main id="main" class="main flex">
+      <div id="movies" class="movies-container centered-grid"></div>
+      <div
+        id="additional-skeletons"
+        class="additional-skeletons centered-grid"
+      ></div>
+      <div id="skeletons" class="skeletons centered-grid"></div>
+      <div
+        id="selected-movie-container"
+        class="selected-movie-container centered-flex"
+      ></div>
     </main>
-    <footer class="footer">
-      <a href="https://nicolasbatista.netlify.app/" target="_blank">
-        https://nicolasbatista.netlify.app/
-      </a>
+    <footer class="footer centered-flex">
+      <a
+        class="centered-flex"
+        href="https://nicolasbatista.netlify.app/"
+        target="_blank"
+        >https://nicolasbatista.netlify.app/</a
+      >
     </footer>
     <script type="module" src="./scripts.js"></script>
   </body>

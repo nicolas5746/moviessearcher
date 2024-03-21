@@ -8,23 +8,34 @@
 }
 
 .navbar {
-    align-items: center;
     background-color: var(--black);
-    display: flex;
-    flex-direction: row;
     height: 10vh;
-    justify-content: center;
     position: fixed;
     width: 100vw;
 }
 
-/*** Menu ***/
-
-.menu {
-    align-items: center;
-    display: flex;
-    justify-content: center;
+.title {
+    color: var(--azure);
+    font-family: 'Holtwood One SC', sans-serif;
+    font-size: 1.5rem;
+    left: 10%;
+    position: absolute;
+    text-align: center;
+    text-transform: uppercase;
+    vertical-align: middle;
 }
+
+.title:hover {
+    -moz-transform: scale(1.01);
+    -ms-transform: scale(1.01);
+    -o-transform: scale(1.01);
+    -webkit-transform: scale(1.01);
+    color: var(--red);
+    cursor: pointer;
+    transform: scale(1.01);
+}
+
+/*** Menu ***/
 
 .menu-toggle {
     visibility: hidden;
@@ -73,15 +84,26 @@
 }
 
 .menu-btn {
-    align-items: center;
     cursor: pointer;
-    display: flex;
     height: 25px;
-    justify-content: center;
     left: 2%;
     position: absolute;
     width: 25px;
-    z-index: 1;
+    z-index: 2;
+}
+
+.menu-btn>span {
+    pointer-events: none;
+}
+
+.menu-btn>span::before {
+    content: '';
+    top: -8px;
+}
+
+.menu-btn>span::after {
+    content: '';
+    top: 8px;
 }
 
 .menu-btn>span,
@@ -98,22 +120,11 @@
     width: 100%;
 }
 
-.menu-btn>span::before {
-    content: '';
-    top: -8px;
-}
-
-.menu-btn>span::after {
-    content: '';
-    top: 8px;
-}
-
 .menu-box {
     -moz-transition-duration: 0.3s;
     -o-transition-duration: 0.3s;
     -webkit-transition-duration: 0.3s;
     background-color: var(--transparent-darkest-black);
-    /* box-shadow: 2px 2px 6px rgba(0, 0, 0, .4); */
     display: block;
     height: 100%;
     left: -100%;
@@ -124,6 +135,7 @@
     top: 0;
     transition-duration: 0.3s;
     width: 40vw;
+    z-index: 1;
 }
 
 .menu-topic {
@@ -135,7 +147,7 @@
     display: block;
     font-family: 'Gruppo', sans-serif;
     font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: 600;
     list-style: none;
     margin: 0 auto;
     padding: 12px 24px;
@@ -147,27 +159,86 @@
 
 .menu-topic:hover {
     background-color: var(--transparent-grey);
-    color: var(--light-lavander);
+    color: var(--red);
     cursor: pointer;
-    font-weight: 500;
+    font-size: 1.52rem;
+    font-weight: 600;
 }
 
 /*** Genres ***/
 
 .genres-container {
-    background-color: var(--black);
     display: none;
-    height: 100%;
-    left: 40vw;
+}
+
+.genres-toggle {
+    visibility: hidden;
+}
+
+.genres-btn {
+    cursor: pointer;
+    display: none;
+    height: 10px;
+    left: 3%;
     position: absolute;
+    width: 10px;
+    z-index: 3;
+}
+
+.genres-btn>span {
+    width: 20px;
+}
+
+.genres-btn>span::before,
+.genres-btn>span::after {
+    width: 15px;
+}
+
+.genres-btn>span,
+.genres-btn>span::before,
+.genres-btn>span::after {
+    -moz-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    -webkit-transition-duration: 0.3s;
+    background-color: var(--gainsboro);
+    display: block;
+    height: 3px;
+    position: absolute;
+    transition-duration: 0.3s;
+}
+
+.genres-btn>span::before {
+    content: '';
+    top: -8px;
+    transform: rotate(135deg) translate(4px, -1px);
+}
+
+.genres-btn>span::after {
+    content: '';
+    top: 8px;
+    transform: rotate(-135deg) translate(4px, 1px);
+}
+
+.genres-box {
+    -moz-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    -webkit-transition-duration: 0.3s;
+    background-color: var(--black);
+    height: 100vh;
+    left: 0;
+    list-style: none;
+    margin: -5px 0 0;
+    padding: 0;
+    position: fixed;
+    text-align: center;
     top: 0;
-    width: 160px;
+    transition-duration: 0.3s;
+    vertical-align: middle;
+    width: 40vw;
+    z-index: 2;
 }
 
 .genres-list {
-    background-color: var(--black);
-    display: flex;
-    flex-direction: column;
     list-style: none;
     margin-top: 10px;
     padding: 0;
@@ -177,11 +248,11 @@
     color: var(--gainsboro);
     cursor: pointer;
     font-family: 'Gruppo', sans-serif;
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-weight: 400;
     line-height: 22px;
     padding: 1px 0;
-    width: 160px;
+    width: 25vw;
 }
 
 .genre:hover {
@@ -191,56 +262,9 @@
     font-weight: 500;
 }
 
-/*** Page Logo ***/
-
-.logo {
-    height: 32px;
-    padding: 12px;
-    width: 36px;
-}
-
-.logo:hover {
-    -moz-transform: scale(1.1);
-    -moz-transition: 0.5s ease-in-out;
-    -ms-transform: scale(1.1);
-    -o-transform: scale(1.1);
-    -o-transition: 0.5s ease-in-out;
-    -webkit-transform: scale(1.1);
-    -webkit-transition: 0.5s ease-in-out;
-    cursor: pointer;
-    transform: scale(1.1);
-    transition: 0.5s ease-in-out;
-}
-
-/*** Vendor prefixes - Flexbox ***/
-
-.genres-list,
-.menu,
-.menu-btn,
-.navbar {
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: -webkit-flex;
-}
-
-/*** Vendor prefixes - Center ***/
-
-.menu,
-.menu-btn,
-.navbar {
-    -moz-box-align: center;
-    -moz-box-pack: center;
-    -ms-flex-align: center;
-    -ms-flex-pack: center;
-    -webkit-box-align: center;
-    -webkit-box-pack: center;
-}
-
-
 /*** Media queries ***/
 
-@media screen and (max-width: 479px) {
+@media (width < 480px) {
     .menu-box {
         width: 50vw;
     }
@@ -249,11 +273,50 @@
         font-size: 1rem;
     }
 
+    .menu-topic:hover {
+        font-size: 1.02rem;
+    }
+
     .genres-container {
         left: 50vw;
     }
 
+    .genres-box {
+        width: 50vw;
+    }
+
+    .genre {
+        font-size: 0.8rem;
+        padding: 0;
+        width: 30vw;
+    }
+
     .genres-list {
-        margin-top: 25px;
+        margin-top: 1px;
+    }
+}
+
+@media (width < 800px) {
+    .title {
+        display: none;
+    }
+}
+
+@media (width >= 800px) {
+    .navbar {
+        -moz-box-pack: justify;
+        -ms-flex-pack: justify;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+    }
+}
+
+@media (width < 1024px) {
+    .title {
+        font-size: 1.2rem;
+    }
+
+    .genre {
+        font-size: 1rem;
     }
 }
