@@ -238,15 +238,23 @@ export const handleOnScrollEvents = () => {
 
     (scrollY >= 600) ? scroller.classList.remove('hide') : scroller.classList.add('hide');
 
-    if (Math.abs(scrollTop + clientHeight > scrollHeight - 1) && scrollY > 0 && !scrollingIsDisabled) {
-        displayPremieres
-            ?
-            addMoviesPage(`&sort_by=primary_release_date.desc&language=en-US&year=${currentYear + 1}&`)
-            :
-            displayByGenre
+    const bottomIsReached = () => {
+        if (Math.abs(scrollTop + clientHeight > scrollHeight - 1) && scrollY > 0 && !scrollingIsDisabled) {
+            displayPremieres
                 ?
-                addMoviesPage(`&with_genres=${genreId}&year=${currentYear}&`)
+                addMoviesPage(`&sort_by=primary_release_date.desc&language=en-US&year=${currentYear + 1}&`)
                 :
-                addMoviesPage();
+                displayByGenre
+                    ?
+                    addMoviesPage(`&with_genres=${genreId}&year=${currentYear}&`)
+                    :
+                    addMoviesPage();
+        }
     }
+
+    window.addEventListener('touchmove', () => {
+        bottomIsReached();
+    });
+
+    bottomIsReached();
 }
