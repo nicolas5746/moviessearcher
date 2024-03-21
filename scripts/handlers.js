@@ -250,3 +250,8 @@ export const handleOnScrollEvents = () => {
                 addMoviesPage();
     }
 }
+
+export const handleOnTouchEnds = (event) => {
+    event.preventDefault();
+    handleOnScrollEvents();
+}
