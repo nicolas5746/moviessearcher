@@ -27,7 +27,6 @@ export const genresBox = document.querySelector('.genres-box');
 export const genresBtn = document.querySelector('.genres-btn');
 export const genresContainer = document.querySelector('.genres-container');
 export const genresList = document.querySelector('.genres-list');
-export const scroller = document.querySelector('.scroll-to-top');
 export const skeletonsSelector = document.querySelector('.skeletons');
 // Elements by tag
 export const scriptTag = document.getElementsByTagName('script');

@@ -1,32 +1,9 @@
 import { moviesRequest } from './data.js';
 import {
-    additionalSkeletons,
-    additionalSkeletonClass,
-    additionalSkeletonsSelector,
-    currentYear,
-    genresList,
-    imageNotFound,
-    main,
-    moviesList,
-    posterW500,
-    posterW1280,
-    resultsClass,
-    searchInput,
-    selectedMovieClass,
-    selectedMovieContainer,
-    skeletons,
-    skeletonsSelector,
-    spinnerClass,
-    thumbnails,
-    youtubeLogo,
-} from './global.js';
-import {
-    handleClassRemover,
-    handleDisableScrolling,
-    handleEnableScrolling,
-    handlePlayTrailer,
-    handleScrollToTop
-} from './handlers.js';
+    additionalSkeletons, additionalSkeletonClass, additionalSkeletonsSelector, currentYear, genresList,
+    imageNotFound, main, moviesList, posterW500, posterW1280, resultsClass, searchInput, selectedMovieClass,
+    selectedMovieContainer, skeletons, skeletonsSelector, spinnerClass, thumbnails, youtubeLogo } from './global.js';
+import { handleClassRemover, handleDisableScrolling, handleEnableScrolling, handlePlayTrailer, handleScrollToTop } from './handlers.js';
 import { loadPlayerAPI } from './player.js';
 
 let bottomIsReached = false;

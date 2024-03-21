@@ -7,3 +7,4 @@ searchInput.addEventListener('keyup', handleOnSearch);
 window.addEventListener('click', handleOnClickEvents);
 window.addEventListener('load', handleOnLoad);
 window.addEventListener('scroll', handleOnScrollEvents);
+window.addEventListener('touchmove', handleOnScrollEvents);

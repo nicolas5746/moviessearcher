@@ -1,31 +1,8 @@
 import { moviesRequest } from './data.js';
 import {
-    currentYear,
-    genreClass,
-    genresBox,
-    genresBtn,
-    genresContainer,
-    logo,
-    menuBtn,
-    menuToggle,
-    menuTopicClass,
-    moviesList,
-    searchIcon,
-    searchInput,
-    selectedMovieClass,
-    skeletonsSelector,
-    thumbnails,
-    title,
-    videoPlayerClass
-} from './global.js';
-import {
-    addMoviesPage,
-    displayMovies,
-    displaySearchResults,
-    findMovies,
-    moviesByGenderName,
-    scrollToTop
-} from './layouts.js';
+    currentYear, genreClass, genresBox, genresBtn, genresContainer, logo, menuBtn, menuToggle, menuTopicClass, moviesList,
+    searchIcon, searchInput, selectedMovieClass, skeletonsSelector, thumbnails, title, videoPlayerClass } from './global.js';
+import { addMoviesPage, displayMovies, displaySearchResults, findMovies, moviesByGenderName, scrollToTop } from './layouts.js';
 import { videoPlayer } from './player.js';
 
 let displayByGenre = false;
@@ -40,14 +17,15 @@ const handleGenresById = (result) => {
         moviesByGenderName(`${genres[i].name}`);
         genreClass[i].onclick = () => displayMovies(`with_genres=${genres[i].id}&year=${currentYear}`);
         genreClass[i].setAttribute('title', genres[i].name);
-        genreClass[i].setAttribute('id', genres[i].id);
+        genreClass[i].setAttribute('id', 'genre-id-' + genres[i].id);
     }
 
     [...genreClass].forEach((genre, index) => {
         genre.addEventListener('click', () => {
             displayPremieres = false;
             displayByGenre = true;
-            genreId = genreClass[index].getAttribute('id');
+            genreId = genreClass[index].getAttribute('id').split('genre-id-')[1];
+            handleHideMenu();
         });
     });
 }
@@ -176,10 +154,6 @@ export const handleOnClickEvents = (event) => {
         genresContainer.style.display = 'flex';
     }
 
-    if (className === 'genre') {
-        handleHideMenu();
-    }
-
     if (className === 'close-video') {
         handleScrollToTop();
         handleClassRemover(videoPlayerClass);
@@ -235,17 +209,25 @@ export const handleOnLoad = () => {
     handleResetInitialValues();
 }
 
+const handleDisableTouchScrolling = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    return false;
+}
+
 export const handleDisableScrolling = () => {
     const { scrollX, scrollY } = window;
 
     window.onscroll = () => {
         window.scrollTo(scrollX, scrollY);
     }
+    window.addEventListener('touchmove', handleDisableTouchScrolling);
     scrollingIsDisabled = true;
 }
 
 export const handleEnableScrolling = () => {
     window.onscroll = null;
+    window.removeEventListener('touchmove', handleDisableTouchScrolling);
     scrollingIsDisabled = false;
 }
 
@@ -256,7 +238,7 @@ export const handleOnScrollEvents = () => {
 
     (scrollY >= 600) ? scroller.classList.remove('hide') : scroller.classList.add('hide');
 
-    if ((scrollTop + clientHeight > scrollHeight - 1) && scrollY > 0 && !scrollingIsDisabled) {
+    if (Math.abs(scrollTop + clientHeight > scrollHeight - 1) && scrollY > 0 && !scrollingIsDisabled) {
         displayPremieres
             ?
             addMoviesPage(`&sort_by=primary_release_date.desc&language=en-US&year=${currentYear + 1}&`)
