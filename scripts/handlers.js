@@ -1,8 +1,7 @@
 import { moviesRequest } from './data.js';
 import {
     currentYear, genreClass, genresBox, genresBtn, genresContainer, logo, menuBtn, menuToggle, menuTopicClass, moviesList,
-    searchIcon, searchInput, selectedMovieClass, skeletonsSelector, thumbnails, title, videoPlayerClass
-} from './global.js';
+    searchIcon, searchInput, selectedMovieClass, skeletonsSelector, thumbnails, title, videoPlayerClass } from './global.js';
 import { addMoviesPage, displayMovies, displaySearchResults, findMovies, moviesByGenderName, scrollToTop } from './layouts.js';
 import { videoPlayer } from './player.js';
 
@@ -232,31 +231,30 @@ export const handleEnableScrolling = () => {
     scrollingIsDisabled = false;
 }
 
-const bottomIsReached = (scrollY) => {
-    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-
-    if (Math.abs(scrollTop + clientHeight > scrollHeight - 1) && scrollY > 0 && !scrollingIsDisabled) {
-        displayPremieres
-            ?
-            addMoviesPage(`&sort_by=primary_release_date.desc&language=en-US&year=${currentYear + 1}&`)
-            :
-            displayByGenre
-                ?
-                addMoviesPage(`&with_genres=${genreId}&year=${currentYear}&`)
-                :
-                addMoviesPage();
-    }
-}
-
 export const handleOnScrollEvents = () => {
     const scroller = document.querySelector('.scroll-to-top');
     const { scrollY } = window;
-    
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+
     (scrollY >= 600) ? scroller.classList.remove('hide') : scroller.classList.add('hide');
 
+    const bottomIsReached = () => {
+        if (Math.abs(scrollTop + clientHeight > scrollHeight - 1) && scrollY > 0 && !scrollingIsDisabled) {
+            displayPremieres
+                ?
+                addMoviesPage(`&sort_by=primary_release_date.desc&language=en-US&year=${currentYear + 1}&`)
+                :
+                displayByGenre
+                    ?
+                    addMoviesPage(`&with_genres=${genreId}&year=${currentYear}&`)
+                    :
+                    addMoviesPage();
+        }
+    }
+
     window.addEventListener('touchmove', () => {
-        bottomIsReached(scrollY);
+        bottomIsReached();
     });
 
-    bottomIsReached(scrollY);
+    bottomIsReached();
 }
