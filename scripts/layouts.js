@@ -302,11 +302,13 @@ export const findMovies = () => {
         ?
         (thumbnails.classList.remove('hide'),
             moviesList.classList.add('opaquing'),
+            additionalSkeletons.classList.add('opaquing'),
             skeletons.classList.add('opaquing'),
             moviesRequest(onSearchMovies, path, params))
         :
         (thumbnails.classList.add('hide'),
             moviesList.classList.remove('opaquing'),
+            additionalSkeletons.classList.remove('opaquing'),
             skeletons.classList.remove('opaquing'));
 }
 
