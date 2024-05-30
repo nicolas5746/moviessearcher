@@ -1,7 +1,8 @@
 import { moviesRequest } from './data.js';
 import {
     currentYear, genreClass, genresBox, genresBtn, genresContainer, logo, menuBtn, menuToggle, menuTopicClass, moviesList,
-    searchIcon, searchInput, selectedMovieClass, skeletonsSelector, thumbnails, title, videoPlayerClass } from './global.js';
+    searchIcon, searchInput, selectedMovieClass, skeletonsSelector, thumbnails, title, videoPlayerClass
+} from './global.js';
 import { addMoviesPage, displayMovies, displaySearchResults, findMovies, moviesByGenderName, scrollToTop } from './layouts.js';
 import { videoPlayer } from './player.js';
 
@@ -9,6 +10,9 @@ let displayByGenre = false;
 let displayPremieres = false;
 let genreId;
 let scrollingIsDisabled = false;
+let touchScrollingDown = false;
+let touchStart;
+let touchEnd;
 
 const handleGenresById = (result) => {
     const genres = result.genres;
@@ -24,6 +28,7 @@ const handleGenresById = (result) => {
         genre.addEventListener('click', () => {
             displayPremieres = false;
             displayByGenre = true;
+            touchScrollingDown = false;
             genreId = genreClass[index].getAttribute('id').split('genre-id-')[1];
             handleHideMenu();
         });
@@ -78,10 +83,32 @@ export const handleHideMenu = () => {
 const handleResetInitialValues = () => {
     displayByGenre = false;
     displayPremieres = false;
+    scrollingIsDisabled = false;
+    touchScrollingDown = false;
     handleHideMenu();
     handleScrollThumbnails();
     displayMovies();
     scrollToTop();
+}
+
+const handleBottomIsReached = () => {
+    displayPremieres
+        ?
+        addMoviesPage(`&sort_by=primary_release_date.desc&language=en-US&year=${currentYear + 1}&`)
+        :
+        displayByGenre
+            ?
+            addMoviesPage(`&with_genres=${genreId}&year=${currentYear}&`)
+            :
+            addMoviesPage();
+}
+
+const handleDisplayPremieres = () => {
+    displayByGenre = false;
+    displayPremieres = true;
+    touchScrollingDown = false;
+    handleHideMenu();
+    displayMovies(`&sort_by=primary_release_date.desc&language=en-US&year=${currentYear + 1}`);
 }
 
 export const handleClassRemover = (className) => {
@@ -195,14 +222,8 @@ export const handleOnLoad = () => {
     menuBtn.setAttribute('title', 'Menu');
     logo.onclick = () => handleResetInitialValues();
     menuTopicClass[0].onclick = () => handleResetInitialValues();
-    menuTopicClass[1].onclick = () => displayMovies(`&sort_by=primary_release_date.desc&language=en-US&year=${currentYear + 1}`);
+    menuTopicClass[1].onclick = () => handleDisplayPremieres();
     title.onclick = () => handleResetInitialValues();
-
-    menuTopicClass[1].addEventListener('click', () => {
-        displayByGenre = false;
-        displayPremieres = true;
-        handleHideMenu();
-    });
 
     handleMoviesByGender();
     handleOnHoverEffects();
@@ -210,7 +231,6 @@ export const handleOnLoad = () => {
 }
 
 const handleDisableTouchScrolling = (event) => {
-    event.preventDefault();
     event.stopPropagation();
     return false;
 }
@@ -238,23 +258,29 @@ export const handleOnScrollEvents = () => {
 
     (scrollY >= 600) ? scroller.classList.remove('hide') : scroller.classList.add('hide');
 
-    const bottomIsReached = () => {
-        if (Math.abs(scrollTop + clientHeight > scrollHeight - 1) && scrollY > 0 && !scrollingIsDisabled) {
-            displayPremieres
-                ?
-                addMoviesPage(`&sort_by=primary_release_date.desc&language=en-US&year=${currentYear + 1}&`)
-                :
-                displayByGenre
-                    ?
-                    addMoviesPage(`&with_genres=${genreId}&year=${currentYear}&`)
-                    :
-                    addMoviesPage();
-        }
-    }
-
-    window.addEventListener('touchmove', () => {
-        bottomIsReached();
+    window.addEventListener('touchstart', (event) => {
+        touchStart = event.changedTouches[0].clientY;
     });
 
-    bottomIsReached();
+    window.addEventListener('touchend', (event) => {
+        touchEnd = event.changedTouches[0].clientY;
+        // Touch down
+        if (touchStart > touchEnd) {
+            touchScrollingDown = true;
+        }
+        // Touch up
+        if (touchStart <= touchEnd) {
+            touchScrollingDown = false;
+        }
+    });
+
+    if (Math.abs(scrollTop + clientHeight > scrollHeight - 1) && scrollY > 0 && !scrollingIsDisabled) {
+        handleBottomIsReached();
+    }
+
+    if (touchScrollingDown) {
+        if (scrollY > scrollHeight - (clientHeight + 100)) {
+            handleBottomIsReached();
+        }
+    }
 }
