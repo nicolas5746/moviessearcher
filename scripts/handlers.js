@@ -111,6 +111,11 @@ const handleDisplayPremieres = () => {
     displayMovies(`&sort_by=primary_release_date.desc&language=en-US&year=${currentYear + 1}`);
 }
 
+const handleDisableTouchScrolling = (event) => {
+    event.stopPropagation();
+    return false;
+}
+
 export const handleClassRemover = (className) => {
     while (className.length >= 1) {
         className[0].parentNode.removeChild(className[0]);
@@ -230,11 +235,6 @@ export const handleOnLoad = () => {
     handleResetInitialValues();
 }
 
-const handleDisableTouchScrolling = (event) => {
-    event.stopPropagation();
-    return false;
-}
-
 export const handleDisableScrolling = () => {
     const { scrollX, scrollY } = window;
 
@@ -254,7 +254,7 @@ export const handleEnableScrolling = () => {
 export const handleOnScrollEvents = () => {
     const scroller = document.querySelector('.scroll-to-top');
     const { scrollY } = window;
-    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+    const { offsetHeight, scrollTop, clientHeight, scrollHeight } = document.documentElement;
 
     (scrollY >= 600) ? scroller.classList.remove('hide') : scroller.classList.add('hide');
 
@@ -264,22 +264,22 @@ export const handleOnScrollEvents = () => {
 
     window.addEventListener('touchend', (event) => {
         touchEnd = event.changedTouches[0].clientY;
-        // Touch down
+        // On touch scrolling down
         if (touchStart > touchEnd) {
             touchScrollingDown = true;
         }
-        // Touch up
+        // On touch scrolling up
         if (touchStart <= touchEnd) {
             touchScrollingDown = false;
         }
     });
-
-    if (Math.abs(scrollTop + clientHeight > scrollHeight - 1) && scrollY > 0 && !scrollingIsDisabled) {
+    // Reach bottom on scrolling
+    if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1 && scrollY > 0 && !scrollingIsDisabled) {
         handleBottomIsReached();
     }
-
+    // Reach bottom on touch scrolling
     if (touchScrollingDown) {
-        if (scrollY > scrollHeight - (clientHeight + 100)) {
+        if (Math.ceil(scrollY) + offsetHeight >= scrollHeight) {
             handleBottomIsReached();
         }
     }
