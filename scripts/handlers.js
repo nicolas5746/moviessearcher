@@ -112,6 +112,7 @@ const handleDisplayPremieres = () => {
 }
 
 const handleDisableTouchScrolling = (event) => {
+    event.cancelable && event.preventDefault();
     event.stopPropagation();
     return false;
 }
@@ -137,12 +138,12 @@ export const handleScrollToTop = (y = window) => {
 export const handleOnClickEvents = (event) => {
     const input = (searchInput.value).trim();
     const { clientX } = event;
-    const { innerWidth } = window;
+    const { innerWidth, matchMedia } = window;
     const { id, className, classList } = event.target;
 
     if (menuToggle.checked) {
         // Multiplying by 100 to get percentage
-        if (window.matchMedia('(width < 480px)').matches) {
+        if (matchMedia('(width < 480px)').matches) {
             if ((clientX / innerWidth * 100) > 50) {
                 handleHideMenu();
             }
@@ -241,7 +242,7 @@ export const handleDisableScrolling = () => {
     window.onscroll = () => {
         window.scrollTo(scrollX, scrollY);
     }
-    window.addEventListener('touchmove', handleDisableTouchScrolling);
+    window.addEventListener('touchmove', handleDisableTouchScrolling, { passive: false });
     scrollingIsDisabled = true;
 }
 
@@ -264,17 +265,11 @@ export const handleOnScrollEvents = () => {
 
     window.addEventListener('touchend', (event) => {
         touchEnd = event.changedTouches[0].clientY;
-        // On touch scrolling down
-        if (touchStart > touchEnd) {
-            touchScrollingDown = true;
-        }
-        // On touch scrolling up
-        if (touchStart <= touchEnd) {
-            touchScrollingDown = false;
-        }
+
+        (touchStart > touchEnd) ? touchScrollingDown = true : touchScrollingDown = false;
     });
     // Reach bottom on scrolling
-    if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1 && scrollY > 0 && !scrollingIsDisabled) {
+    if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1 && !scrollingIsDisabled) {
         handleBottomIsReached();
     }
     // Reach bottom on touch scrolling
