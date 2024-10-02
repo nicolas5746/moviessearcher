@@ -1,10 +1,15 @@
 /*** Selected Movie Card ***/
 
 .selected-movie-container {
-    margin-top: 15vh;
-    padding-bottom: 100px;
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    left: 50%;
+    margin: 0;
     position: absolute;
-    top: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
 }
 
@@ -288,26 +293,20 @@
 
 @media (width < 550px) {
     .selected-movie-container {
-        -moz-transform: scale(0.45);
-        -ms-transform: scale(0.45);
-        -o-transform: scale(0.45);
-        -webkit-transform: scale(0.45);
-        transform: scale(0.45);
-    }
-}
-
-@media (width < 768px) {
-    .selected-movie-container {
-        margin-top: 8vh;
+        -moz-transform: scale(0.45) translate(-110%, -100%);
+        -ms-transform: scale(0.45) translate(-110%, -100%);
+        -o-transform: scale(0.45) translate(-110%, -100%);
+        -webkit-transform: scale(0.45) translate(-110%, -100%);
+        transform: scale(0.45) translate(-110%, -100%);
     }
 }
 
 @media (550px <= width < 768px) {
     .selected-movie-container {
-        -moz-transform: scale(0.75);
-        -ms-transform: scale(0.75);
-        -o-transform: scale(0.75);
-        -webkit-transform: scale(0.75);
-        transform: scale(0.75);
+        -moz-transform: scale(0.75) translate(-65%, -75%);
+        -ms-transform: scale(0.75) translate(-65%, -75%);
+        -o-transform: scale(0.75) translate(-65%, -75%);
+        -webkit-transform: scale(0.75) translate(-65%, -75%);
+        transform: scale(0.75) translate(-65%, -75%);
     }
 }

@@ -1,4 +1,4 @@
-import { moviesRequest } from './data.js';
+import { getPortfolioURL, moviesRequest } from './data.js';
 import {
     currentYear, genreClass, genresBox, genresBtn, genresContainer, logo, menuBtn, menuToggle, menuTopicClass, moviesList,
     searchIcon, searchInput, selectedMovieClass, skeletonsSelector, thumbnails, title, videoPlayerClass
@@ -96,11 +96,7 @@ const handleBottomIsReached = () => {
         ?
         addMoviesPage(`&sort_by=primary_release_date.desc&language=en-US&year=${currentYear + 1}&`)
         :
-        displayByGenre
-            ?
-            addMoviesPage(`&with_genres=${genreId}&year=${currentYear}&`)
-            :
-            addMoviesPage();
+        displayByGenre ? addMoviesPage(`&with_genres=${genreId}&year=${currentYear}&`) : addMoviesPage();
 }
 
 const handleDisplayPremieres = () => {
@@ -120,20 +116,11 @@ const handleDisableTouchScrolling = (event) => {
 export const handleClassRemover = (className) => {
     while (className.length >= 1) {
         className[0].parentNode.removeChild(className[0]);
-
-        if (className.length === 0) {
-            break;
-        }
+        if (className.length === 0) break;
     }
 }
 
-export const handleScrollToTop = (y = window) => {
-    y.scroll({
-        behavior: 'smooth',
-        left: 0,
-        top: 0
-    });
-}
+export const handleScrollToTop = (y = window) => y.scroll({ behavior: 'smooth', left: 0, top: 0 });
 
 export const handleOnClickEvents = (event) => {
     const input = (searchInput.value).trim();
@@ -144,19 +131,17 @@ export const handleOnClickEvents = (event) => {
     if (menuToggle.checked) {
         // Multiplying by 100 to get percentage
         if (matchMedia('(width < 480px)').matches) {
-            if ((clientX / innerWidth * 100) > 50) {
-                handleHideMenu();
-            }
+            if ((clientX / innerWidth * 100) > 50) handleHideMenu();
         } else {
-            if ((clientX / innerWidth * 100) > 40) {
-                handleHideMenu();
-            }
+            if ((clientX / innerWidth * 100) > 40) handleHideMenu();
         }
+        window.addEventListener('keyup', (event) => {
+            const { key } = event;
+            if (key === 'Escape') handleHideMenu();
+        });
     }
 
-    if ((id === 'search-icon' || id === 'search-icon-circle') && input.length >= 1) {
-        displaySearchResults();
-    }
+    if ((id === 'search-icon' || id === 'search-icon-circle') && input.length >= 1) displaySearchResults();
 
     if (id !== 'search-input') {
         thumbnails.classList.add('hide');
@@ -164,22 +149,16 @@ export const handleOnClickEvents = (event) => {
         skeletonsSelector.classList.remove('opaquing');
     }
 
-    if (id === 'search-input' && input.length >= 1) {
-        findMovies();
-    }
+    if (id === 'search-input' && input.length >= 1) findMovies();
 
     if (id === 'menu-toggle') {
         const scroller = document.querySelector('.scroll-to-top');
         const menuTitle = menuBtn.getAttribute('title');
-
         (scroller.style.display === 'none') ? scroller.style.removeProperty('display') : scroller.style.display = 'none';
-
         (menuTitle === 'Close') ? (menuBtn.setAttribute('title', 'Menu')) : menuBtn.setAttribute('title', 'Close');
     }
 
-    if (id === 'genres-toggle') {
-        handleHideGenresList();
-    }
+    if (id === 'genres-toggle') handleHideGenresList();
 
     if (id === 'genres-menu' || classList.contains('genres-box')) {
         genresBox.style.left = '0';
@@ -204,9 +183,7 @@ export const handleOnSearch = (event) => {
         :
         findMovies();
 
-    if ((key === 'Backspace' || key === 'Delete') && input.length < 4) {
-        findMovies();
-    }
+    if ((key === 'Backspace' || key === 'Delete') && input.length < 4) findMovies();
 
     if (key === 'Enter' & input.length >= 2) {
         displaySearchResults();
@@ -216,15 +193,13 @@ export const handleOnSearch = (event) => {
 
 export const handlePlayTrailer = (key) => {
     handleScrollToTop();
-
     window.addEventListener('click', (event) => {
-        if (event.target.id === 'watch-trailer') {
-            videoPlayer(key);
-        }
+        if (event.target.id === 'watch-trailer') videoPlayer(key);
     });
 }
 
 export const handleOnLoad = () => {
+    const portfolioLink = document.getElementById('portfolio-link');
     menuBtn.setAttribute('title', 'Menu');
     logo.onclick = () => handleResetInitialValues();
     menuTopicClass[0].onclick = () => handleResetInitialValues();
@@ -234,14 +209,13 @@ export const handleOnLoad = () => {
     handleMoviesByGender();
     handleOnHoverEffects();
     handleResetInitialValues();
+    getPortfolioURL(portfolioLink);
 }
 
 export const handleDisableScrolling = () => {
     const { scrollX, scrollY } = window;
 
-    window.onscroll = () => {
-        window.scrollTo(scrollX, scrollY);
-    }
+    window.onscroll = () => window.scrollTo(scrollX, scrollY);
     window.addEventListener('touchmove', handleDisableTouchScrolling, { passive: false });
     scrollingIsDisabled = true;
 }
@@ -265,17 +239,10 @@ export const handleOnScrollEvents = () => {
 
     window.addEventListener('touchend', (event) => {
         touchEnd = event.changedTouches[0].clientY;
-
         (touchStart > touchEnd) ? touchScrollingDown = true : touchScrollingDown = false;
     });
     // Reach bottom on scrolling
-    if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1 && !scrollingIsDisabled) {
-        handleBottomIsReached();
-    }
+    if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1 && !scrollingIsDisabled) handleBottomIsReached();
     // Reach bottom on touch scrolling
-    if (touchScrollingDown) {
-        if (Math.ceil(scrollY) + offsetHeight >= scrollHeight) {
-            handleBottomIsReached();
-        }
-    }
+    if (touchScrollingDown && Math.ceil(scrollY) + offsetHeight >= scrollHeight) handleBottomIsReached();
 }

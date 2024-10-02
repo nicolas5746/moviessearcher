@@ -2,7 +2,8 @@ import { moviesRequest } from './data.js';
 import {
     additionalSkeletons, additionalSkeletonClass, additionalSkeletonsSelector, currentYear, genresList,
     imageNotFound, main, moviesList, posterW500, posterW1280, resultsClass, searchInput, selectedMovieClass,
-    selectedMovieContainer, skeletons, skeletonsSelector, spinnerClass, thumbnails, youtubeLogo } from './global.js';
+    selectedMovieContainer, skeletons, skeletonsSelector, spinnerClass, thumbnails, youtubeLogo
+} from './global.js';
 import { handleClassRemover, handleDisableScrolling, handleEnableScrolling, handlePlayTrailer, handleScrollToTop } from './handlers.js';
 import { loadPlayerAPI } from './player.js';
 
@@ -24,25 +25,15 @@ const cardSkeletons = () => {
     let skeleton;
     const skeletonHTML = `<div class='loading-skeleton'></div>`;
 
-    if (window.matchMedia('(width >= 1600px)').matches) {
-        skeleton = skeletonHTML.repeat(5);
-    }
+    if (window.matchMedia('(width >= 1600px)').matches) skeleton = skeletonHTML.repeat(5);
 
-    if (window.matchMedia('(1024px <= width < 1600px)').matches) {
-        skeleton = skeletonHTML.repeat(4);
-    }
+    if (window.matchMedia('(1024px <= width < 1600px)').matches) skeleton = skeletonHTML.repeat(4);
 
-    if (window.matchMedia('(768px <= width < 1024px)').matches) {
-        skeleton = skeletonHTML.repeat(3);
-    }
+    if (window.matchMedia('(768px <= width < 1024px)').matches) skeleton = skeletonHTML.repeat(3);
 
-    if (window.matchMedia('(480px <= width < 768px)').matches) {
-        skeleton = skeletonHTML.repeat(2);
-    }
+    if (window.matchMedia('(480px <= width < 768px)').matches) skeleton = skeletonHTML.repeat(2);
 
-    if (window.matchMedia('(width < 480px)').matches) {
-        skeleton = skeletonHTML.repeat(1);
-    }
+    if (window.matchMedia('(width < 480px)').matches) skeleton = skeletonHTML.repeat(1);
 
     skeletons.innerHTML = skeleton;
     main.appendChild(skeletons);
@@ -89,9 +80,7 @@ const displaySkeletons = (display) => {
             bottomIsReached = false);
 }
 
-const clearMovieList = () => {
-    moviesList.innerHTML = '';
-}
+const clearMovieList = () => moviesList.innerHTML = '';
 
 const noResultsFounded = (response) => {
     handleClassRemover(resultsClass);
@@ -189,8 +178,7 @@ const selectedMovieCard = (movie) => {
             <h3>Release date:&nbsp;${(movie.release_date) ? movie.release_date : 'N/A'}</h3>
             ${(movie.vote_average >= 1) ? `<h3>Rating:<span class='rating-star'>&nbsp;★&nbsp;</span>${Math.round(movie.vote_average * 10) / 10}</h3>` : ''}
             <p><span>Overview:&nbsp;</span>${movieOverview}</p>
-            ${((movie.videos.results.length && movieTrailers.length) >= 1)
-            ?
+            ${((movie.videos.results.length && movieTrailers.length) >= 1) ?
             `<div class='movie-trailer centered-flex column'>
                 <h3>Watch Trailer</h3>
                 <img id='watch-trailer' alt='Watch Trailer' src='${youtubeLogo}' title='Watch Trailer' />
@@ -221,10 +209,7 @@ const onLoadMovies = (movies, response) => {
             handleClassRemover(spinnerClass);
             noResultsFounded(response);
         }, 5000);
-
-    if (movies.total_results <= 20) {
-        pauseAddingMovies = true;
-    }
+    if (movies.total_results <= 20) pauseAddingMovies = true;
 }
 
 const onSearchMovies = (movies) => {
@@ -232,7 +217,7 @@ const onSearchMovies = (movies) => {
 
     if (movies.total_results >= 1) {
         thumbnails.innerHTML = '';
-        movieCard(movies.results, thumbnails, 'thumbnail', 'thumbnail-info flex column', false);
+        movieCard(movies.results, thumbnails, 'thumbnail', 'thumbnail-info flex column');
         displayDetails();
         (input.length > 2) ? console.log(movies.results) : console.clear();
     }
@@ -261,7 +246,6 @@ const displayDetails = () => {
             fetchMovieDetails(movie);
         });
     });
-
     thumbnailClasses.forEach((movie) => {
         movie.addEventListener('click', () => {
             searchInput.value = '';
@@ -279,10 +263,7 @@ const addMovies = (movies) => {
         displaySkeletons(false);
         displayDetails();
         handleEnableScrolling();
-
-        if (selectedMovieClass.length > 0) {
-            clearMovieList();
-        }
+        if (selectedMovieClass.length > 0) clearMovieList();
     }
 }
 
@@ -312,7 +293,7 @@ export const findMovies = () => {
             skeletons.classList.remove('opaquing'));
 }
 
-export const addMoviesPage = (param = `sort_by=popularity.desc&year=${currentYear}|${currentYear - 1}&`) => {
+export const addMoviesPage = (param = `sort_by=popularity.desc&year=${currentYear}|${currentYear - 1}|${currentYear - 2}&`) => {
     const path = (isSearching) ? '3/search/movie' : '3/discover/movie';
     const params = `page=${startPage}&include_adult=false&${isSearching ? `query=${searchQuery}&` : param}`;
 
@@ -329,7 +310,7 @@ export const addMoviesPage = (param = `sort_by=popularity.desc&year=${currentYea
     }
 }
 
-export const displayMovies = (param = `sort_by=popularity.desc&year=${currentYear}|${currentYear - 1}`, subdir = 'discover') => {
+export const displayMovies = (param = `sort_by=popularity.desc&year=${currentYear}|${currentYear - 1}|${currentYear - 2}`, subdir = 'discover') => {
     selectedMovieContainer.innerHTML = '';
     clearMovieList();
     displaySkeletons(false);

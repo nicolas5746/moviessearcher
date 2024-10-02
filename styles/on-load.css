@@ -50,7 +50,7 @@
 }
 
 .movie>img {
-    aspect-ratio: 16/9;
+    aspect-ratio: 1;
     border-radius: 35px;
     height: 300px;
     padding: 25px;

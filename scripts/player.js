@@ -7,9 +7,7 @@ const onPlayerReady = (event) => {
 }
 
 const onPlayerStateChange = (event) => {
-    if (event.data === YT.PlayerState.PLAYING || YT.PlayerState.PAUSED) {
-        handleHideMenu();
-    }
+    if (event.data === YT.PlayerState.PLAYING || YT.PlayerState.PAUSED) handleHideMenu();
 }
 
 const onYouTubeIframeAPIReady = (key) => {
@@ -38,9 +36,7 @@ const createScriptTag = () => {
     document.head.appendChild(tag);
 }
 
-export const loadPlayerAPI = () => {
-    (window.YT) ? YT : createScriptTag();
-}
+export const loadPlayerAPI = () => (window.YT) ? YT : createScriptTag();
 
 export const videoPlayer = (key) => {
     handleScrollToTop();
