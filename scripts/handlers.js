@@ -1,6 +1,6 @@
 import { getPortfolioURL, moviesRequest } from './data.js';
 import {
-    currentYear, genreClass, genresBox, genresBtn, genresContainer, logo, menuBtn, menuToggle, menuTopicClass, moviesList,
+    additionalSkeletons, currentYear, genreClass, genresBox, genresBtn, genresContainer, logo, menuBtn, menuToggle, menuTopicClass, moviesList,
     searchIcon, searchInput, selectedMovieClass, skeletonsSelector, thumbnails, title, videoPlayerClass
 } from './global.js';
 import { addMoviesPage, displayMovies, displaySearchResults, findMovies, moviesByGenderName, scrollToTop } from './layouts.js';
@@ -13,6 +13,8 @@ let scrollingIsDisabled = false;
 let touchScrollingDown = false;
 let touchStart;
 let touchEnd;
+
+export const handleScrollToTop = (y = window) => y.scroll({ behavior: 'smooth', left: 0, top: 0 });
 
 const handleGenresById = (result) => {
     const genres = result.genres;
@@ -85,6 +87,7 @@ const handleResetInitialValues = () => {
     displayPremieres = false;
     scrollingIsDisabled = false;
     touchScrollingDown = false;
+    moviesList.style.visibility = 'visible';
     handleHideMenu();
     handleScrollThumbnails();
     displayMovies();
@@ -120,8 +123,6 @@ export const handleClassRemover = (className) => {
     }
 }
 
-export const handleScrollToTop = (y = window) => y.scroll({ behavior: 'smooth', left: 0, top: 0 });
-
 export const handleOnClickEvents = (event) => {
     const input = (searchInput.value).trim();
     const { clientX } = event;
@@ -146,6 +147,7 @@ export const handleOnClickEvents = (event) => {
     if (id !== 'search-input') {
         thumbnails.classList.add('hide');
         moviesList.classList.remove('opaquing');
+        additionalSkeletons.classList.remove('opaquing');
         skeletonsSelector.classList.remove('opaquing');
     }
 
@@ -188,6 +190,7 @@ export const handleOnSearch = (event) => {
     if (key === 'Enter' & input.length >= 2) {
         displaySearchResults();
         moviesList.click();
+        window.scrollTo(0, 0);
     }
 }
 

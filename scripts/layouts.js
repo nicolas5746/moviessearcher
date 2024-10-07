@@ -9,12 +9,16 @@ import { loadPlayerAPI } from './player.js';
 
 let bottomIsReached = false;
 let isSearching = false;
+let loading = false;
 let pauseAddingMovies = false;
 let searchQuery = '';
 let startPage = 2;
 let totalPages;
 
+const clearMovieList = () => moviesList.innerHTML = '';
+
 const spinner = (parentElement) => {
+    loading = true;
     const spinnerElement = document.createElement('div');
     spinnerElement.classList.add('spinner');
     spinnerElement.innerHTML = `<div></div><div></div>`;
@@ -25,25 +29,27 @@ const cardSkeletons = () => {
     let skeleton;
     const skeletonHTML = `<div class='loading-skeleton'></div>`;
 
-    if (window.matchMedia('(width >= 1600px)').matches) skeleton = skeletonHTML.repeat(5);
+    if (!loading) {
+        if (window.matchMedia('(width >= 1600px)').matches) skeleton = skeletonHTML.repeat(5);
 
-    if (window.matchMedia('(1024px <= width < 1600px)').matches) skeleton = skeletonHTML.repeat(4);
+        if (window.matchMedia('(1024px <= width < 1600px)').matches) skeleton = skeletonHTML.repeat(4);
 
-    if (window.matchMedia('(768px <= width < 1024px)').matches) skeleton = skeletonHTML.repeat(3);
+        if (window.matchMedia('(768px <= width < 1024px)').matches) skeleton = skeletonHTML.repeat(3);
 
-    if (window.matchMedia('(480px <= width < 768px)').matches) skeleton = skeletonHTML.repeat(2);
+        if (window.matchMedia('(480px <= width < 768px)').matches) skeleton = skeletonHTML.repeat(2);
 
-    if (window.matchMedia('(width < 480px)').matches) skeleton = skeletonHTML.repeat(1);
+        if (window.matchMedia('(width < 480px)').matches) skeleton = skeletonHTML.repeat(1);
 
-    skeletons.innerHTML = skeleton;
-    main.appendChild(skeletons);
+        skeletons.innerHTML = skeleton;
+        main.appendChild(skeletons);
+    }
 }
 
 const addSkeletons = () => {
     let skeleton;
     const skeletonHTML = `<div class='additional-skeleton'></div>`;
 
-    if (window.matchMedia('(768px <= width < 1024px)').matches) {
+    if (window.matchMedia('(768px <= width < 1024px)').matches && !loading) {
         skeleton = skeletonHTML.repeat(3);
         additionalSkeletons.innerHTML = skeleton;
         main.appendChild(additionalSkeletons);
@@ -68,19 +74,17 @@ const addSkeletons = () => {
 }
 
 const displaySkeletons = (display) => {
-    (display)
-        ?
-        (additionalSkeletonsSelector.style.display = 'grid',
-            skeletonsSelector.style.display = 'grid',
-            bottomIsReached = true,
-            addSkeletons())
-        :
-        (additionalSkeletonsSelector.style.display = 'none',
-            skeletonsSelector.style.display = 'none',
-            bottomIsReached = false);
+    if (display && !loading) {
+        additionalSkeletonsSelector.style.display = 'grid';
+        skeletonsSelector.style.display = 'grid';
+        bottomIsReached = true;
+        addSkeletons();
+    } else {
+        additionalSkeletonsSelector.style.display = 'none';
+        skeletonsSelector.style.display = 'none';
+        bottomIsReached = false;
+    }
 }
-
-const clearMovieList = () => moviesList.innerHTML = '';
 
 const noResultsFounded = (response) => {
     handleClassRemover(resultsClass);
@@ -198,17 +202,17 @@ const selectedMovieCard = (movie) => {
 }
 
 const onLoadMovies = (movies, response) => {
-    (movies.total_results >= 1)
-        ?
-        (handleClassRemover(spinnerClass),
-            clearMovieList(),
-            movieCard(movies.results, moviesList, 'movie', 'latest-movie-info centered-flex column', true),
-            displayDetails())
-        :
+    if (movies.total_results >= 1) {
+        handleClassRemover(spinnerClass);
+        clearMovieList();
+        movieCard(movies.results, moviesList, 'movie', 'latest-movie-info centered-flex column', true);
+        displayDetails();
+    } else {
         setTimeout(() => {
             handleClassRemover(spinnerClass);
             noResultsFounded(response);
         }, 5000);
+    }
     if (movies.total_results <= 20) pauseAddingMovies = true;
 }
 
@@ -242,6 +246,8 @@ const displayDetails = () => {
 
     movieClasses.forEach((movie) => {
         movie.addEventListener('click', () => {
+            moviesList.style.visibility = 'hidden';
+            loading = true;
             clearMovieList();
             fetchMovieDetails(movie);
         });
@@ -250,6 +256,7 @@ const displayDetails = () => {
         movie.addEventListener('click', () => {
             searchInput.value = '';
             thumbnails.innerHTML = '';
+            loading = true;
             clearMovieList();
             fetchMovieDetails(movie);
         });
@@ -260,6 +267,7 @@ const addMovies = (movies) => {
     if (movies.total_results >= 1) {
         totalPages = movies.total_pages;
         movieCard(movies.results, moviesList, 'movie', 'latest-movie-info centered-flex column', true);
+        loading = false;
         displaySkeletons(false);
         displayDetails();
         handleEnableScrolling();
@@ -279,18 +287,18 @@ export const findMovies = () => {
     const path = '3/search/movie';
     const params = `query=${input}&`;
 
-    (input.length > 0)
-        ?
-        (thumbnails.classList.remove('hide'),
-            moviesList.classList.add('opaquing'),
-            additionalSkeletons.classList.add('opaquing'),
-            skeletons.classList.add('opaquing'),
-            moviesRequest(onSearchMovies, path, params))
-        :
-        (thumbnails.classList.add('hide'),
-            moviesList.classList.remove('opaquing'),
-            additionalSkeletons.classList.remove('opaquing'),
-            skeletons.classList.remove('opaquing'));
+    if (input.length > 0) {
+        thumbnails.classList.remove('hide');
+        moviesList.classList.add('opaquing');
+        additionalSkeletons.classList.add('opaquing');
+        skeletons.classList.add('opaquing');
+        moviesRequest(onSearchMovies, path, params);
+    } else {
+        thumbnails.classList.add('hide');
+        moviesList.classList.remove('opaquing');
+        additionalSkeletons.classList.remove('opaquing');
+        skeletons.classList.remove('opaquing');
+    }
 }
 
 export const addMoviesPage = (param = `sort_by=popularity.desc&year=${currentYear}|${currentYear - 1}|${currentYear - 2}&`) => {
@@ -323,9 +331,10 @@ export const displayMovies = (param = `sort_by=popularity.desc&year=${currentYea
     }
 
     startPage = 2;
+    loading = false;
     isSearching = false;
     pauseAddingMovies = false;
-    handleScrollToTop();
+    window.scrollTo(0, 0);
 }
 
 export const displaySearchResults = () => {

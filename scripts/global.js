@@ -36,7 +36,7 @@ export const tmdbDomain = 'https://api.themoviedb.org/';
 // Links to images
 export const posterW500 = 'https://image.tmdb.org/t/p/w500';
 export const posterW1280 = 'https://image.tmdb.org/t/p/w1280';
-export const imageNotFound = 'https://i.postimg.cc/fLVkfb2C/image-not-found.png';
-export const youtubeLogo = 'https://www.youtube.com/s/desktop/d7216197/img/favicon_48x48.png';
+export const imageNotFound = 'https://res.cloudinary.com/dmnyy2q99/image/upload/v1728320320/image-not-found_neuduy.png';
+export const youtubeLogo = 'https://res.cloudinary.com/dmnyy2q99/image/upload/v1728320320/youtube_gqabdv.png';
 // Current year with Date JS method
 export const currentYear = new Date().getFullYear();
