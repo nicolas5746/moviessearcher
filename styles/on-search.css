@@ -143,6 +143,13 @@
 
 /*** Results ***/
 
+.results {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, 50%);
+}
+
 .results>p {
     color: var(--azure);
     font-family: 'Allerta Stencil';
