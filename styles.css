@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Allerta%20Stencil');
-@import url('https://fonts.googleapis.com/css?family=Gruppo');
+@import url('https://fonts.googleapis.com/css?family=Allerta%20Stencil&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Gruppo&display=swap');
 @import url('https://fonts.cdnfonts.com/css/holtwood-one-sc');
-@import url('https://fonts.googleapis.com/css?family=Nova%20Flat');
+@import url('https://fonts.googleapis.com/css?family=Nova%20Flat&display=swap');
 @import './styles/global.css';
 @import './styles/navbar.css';
 @import './styles/on-load.css';

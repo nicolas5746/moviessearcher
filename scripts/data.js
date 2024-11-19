@@ -30,6 +30,7 @@ export const getPortfolioURL = async (id) => {
         .then((response) => {
             id.innerHTML = response.url;
             id.setAttribute('href', response.url);
+            id.setAttribute('title', response.url);
         })
         .catch((error) => console.error(error.message));
 }

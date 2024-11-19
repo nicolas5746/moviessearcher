@@ -32,6 +32,7 @@ const handleGenresById = (result) => {
             displayByGenre = true;
             touchScrollingDown = false;
             genreId = genreClass[index].getAttribute('id').split('genre-id-')[1];
+            moviesList.style.visibility = 'visible';
             handleHideMenu();
         });
     });
@@ -106,6 +107,7 @@ const handleDisplayPremieres = () => {
     displayByGenre = false;
     displayPremieres = true;
     touchScrollingDown = false;
+    moviesList.style.visibility = 'visible';
     handleHideMenu();
     displayMovies(`&sort_by=primary_release_date.desc&language=en-US&year=${currentYear + 1}`);
 }
